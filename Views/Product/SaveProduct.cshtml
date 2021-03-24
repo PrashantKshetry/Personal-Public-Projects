@@ -1,0 +1,69 @@
+﻿@model ShoppingCart.Model.ProductModel
+
+@{
+    ViewBag.Title = "AddProduct";
+}
+
+<h2>AddProduct</h2>
+
+<body>
+    @using (Html.BeginForm("AddProduct", "Product", FormMethod.Post))
+    {
+        <table align="center">
+            <tr>
+                <td>
+                    <div>
+                        @Html.TextBoxFor(m => m.ProductId, "", new { @class = "", @style = "", @hidden = "hidden" })
+                    </div>
+                    <div>
+                        Enter Product Name
+                        @Html.TextBoxFor(m => m.ProductName, "", new { @class = "", @style = "" })
+                    </div><br />
+                    <div>
+                        Enter Product Quantity
+                        @Html.TextBoxFor(m => m.Quantity, "", new { @class = "", @style = "" })
+                    </div><br />
+                    <div>
+                        Enter Product Rate
+                        @Html.TextBoxFor(m => m.Rate, "", new { @class = "", @style = "" })
+                    </div><br />
+                    @*<div>
+                        Select Category:
+                        @{
+            List<SelectListItem> CountryList = new List<SelectListItem>();
+            CountryList.Add(new SelectListItem
+            {
+                Text = "Nepal",
+                Value = "1",
+                Selected = true
+            });
+            CountryList.Add(new SelectListItem
+            {
+                Text = "India",
+                Value = "2",
+
+            });
+            CountryList.Add(new SelectListItem
+            {
+                Text = "China",
+                Value = "3",
+
+            });
+            CountryList.Add(new SelectListItem
+            {
+                Text = "Pakistan",
+                Value = "4",
+
+            });
+                        }
+                        @Html.DropDownListFor(m => m.ProductCategoryId, CountryList, "-- Select Country --")
+                    </div><br />*@
+                    <div>
+                        <input type="submit" value="submit" name="submit" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</body>
+

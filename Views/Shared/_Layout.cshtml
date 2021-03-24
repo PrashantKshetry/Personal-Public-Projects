@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Content/Jquery/jquery.min.js"></script>
+    <script src="~/Content/Kendo/kendo.all.min.js"></script>
+    <link href="~/Content/Kendo/kendo.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Kendo/kendo.common-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Exolutus/css/layout.css" rel="stylesheet" />
+    <link href="~/Content/Exolutus/css/animate.css" rel="stylesheet" />
+    <link href="~/Content/themify-icons/themify-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <script src="~/Content/Exolutus/js/main.js"></script>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("ONLINE SHOPPING", "DashBoard", "Product", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse col">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Product Explorer
+                        </a>
+                        @*<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-item" href="#">
+                <p>Mens Fashion</p>
+                <ul>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=1">Accessories</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=2">Footwears</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=3">Clothings</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=4">Sun Glasses</a></li>
+                </ul>
+            </div>
+            <div class="dropdown-item" href="#">
+                <p>Womens Fashion</p>
+                <ul>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=5">Accessories</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=6">Bags</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=7">Clothings</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=8">Footwears</a></li>
+                </ul>
+            </div>
+            <div class="dropdown-item" href="#">
+                <p>Foods and beverages</p>
+                <ul>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=9">Wine</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=10">Cakes</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=11">Chocolates</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=12">Sweets</a></li>
+                </ul>
+            </div>
+            <div class="dropdown-item" href="#">
+                <p>Electronics</p>
+                <ul>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=13">Home Entertainment</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=14">Televisions</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=15">Air Coolers</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=16">Laptops</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=23">Mobile Phones</a></li>
+                </ul>
+            </div>
+            <div class="dropdown-item" href="#">
+                <p>Others</p>
+                <ul>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=17">Gifts</a></li>
+                    <li><a href="~/Product/GetProductBySubCategoryId?Id=18">Services</a></li>
+                </ul>
+            </div>
+            <div class="dropdown-item" href="#">
+                <p>Sports</p>
+            </div>
+        </div>*@
+                        @{ Html.RenderAction("GetMenuItems", "Product"); }
+                    </li>
+                    @if (Session["AdminName"] != null)
+                    {
+                        <li>@Html.ActionLink("Person", "ViewPerson", "Person")</li>
+                        <li>@Html.ActionLink("Category", "ViewProductCategory", "ProductCategory")</li>
+                        <li>@Html.ActionLink("Product", "ViewProduct", "Product")</li>
+                        <li>@Html.ActionLink("Cart Data", "ShowAllCart", "Customer")</li>
+                    } 
+                    @if(Session["LogName"] != null)
+                    {
+                        <li>@Html.ActionLink("Add/Edit Profile", "ViewProfile", "Person")</li>
+                    }
+
+                </ul>
+
+                <div class="log-reg">
+                    @{if (Session["LogName"] != null)
+                        {
+                            <p style="color:red;">
+                                @Session["LogName"].ToString()
+                            <a href="~/Person/PersonLogout"><input type="button" class="btn btn-success" value="LogOut" /></a>
+                            </p>
+                        }
+                        else if (Session["AdminName"] != null)
+                        {
+                        <p style="color:red;">
+                            @Session["AdminName"].ToString()
+                                        <a href="~/Person/PersonLogout"><input type="button" class="btn btn-success" value="LogOut" /></a>
+                                    </p>
+                        }
+                        else
+                        {
+                        <a href="~/Person/Login">
+                            <button class="btn btn-success">Login/Register</button>
+                        </a>
+                        }
+                     }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content animated fadeIn">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>
+
+
+

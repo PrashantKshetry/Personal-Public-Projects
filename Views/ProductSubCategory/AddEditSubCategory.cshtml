@@ -1,0 +1,103 @@
+﻿@model ShoppingCart.Model.ProductSubCategoryModel
+
+@{
+    ViewBag.Title = "AddProductSubCategory";
+}
+<div id="Title" style="text-align:center">
+    <h2 class="text-center">Add Sub Category</h2>
+</div>
+
+
+@*@using (Html.BeginForm("SaveSubCategory", "ProductSubCategory", FormMethod.Post))
+    {
+        <table align="center">
+            <tr>
+                <td>
+                    <div>
+                        @Html.TextBoxFor(m => m.SubCategoryId, "", new { @class = "", @style = "", @hidden = "hidden" })
+                    </div>
+                    <div>
+                        Enter Product Subcategory Name
+                        @Html.TextBoxFor(m => m.SubCategoryName, "", new { @class = "", @style = "" })
+                    </div><br />
+                          <div>
+                              Select Category:
+                              @Html.TextBoxFor(m => m.CategoryId, "", new { @class = "", @style = "" })
+                              @*{
+                                    List<SelectListItem> CountryList = new List<SelectListItem>();
+                                    CountryList.Add(new SelectListItem
+                                    {
+                                        Text = "Nepal",
+                                        Value = "1",
+                                        Selected = true
+                                    });
+                                    CountryList.Add(new SelectListItem
+                                    {
+                                        Text = "India",
+                                        Value = "2",
+
+                                    });
+                                    CountryList.Add(new SelectListItem
+                                    {
+                                        Text = "China",
+                                        Value = "3",
+
+                                    });
+                                    CountryList.Add(new SelectListItem
+                                    {
+                                        Text = "Pakistan",
+                                        Value = "4",
+
+                                    });
+                                }
+                                @Html.DropDownListFor(m => m.CategoryId, CountryList, "-- Select Country --")
+                          </div><br />
+                    <div>
+                        <input type="submit" value="submit" name="submit" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }*@
+
+@using (Html.BeginForm("SaveSubCategory", "ProductSubCategory", FormMethod.Post, new { style = "width:auto" }))
+{
+    <div class="form-group" style="display:none;">
+        <label for="SubCategoryId">Sub Category Name</label>
+        @Html.TextBoxFor(m => m.SubCategoryId, "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="SubCategoryName">Sub Category Name</label>
+        @Html.TextBoxFor(m => m.SubCategoryName, "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="CategoryId">Select Category</label>
+        @Html.TextBoxFor(m => m.CategoryId, "", new { @class = "form-control" })
+    </div>
+    <div align="right">
+        <input type="submit" class="btn btn-primary" name="submit" value="Submit">
+        <input type="button" class="btn btn-danger" value="Cancel" data-dismiss="modal">
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        var ds1 = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: '@Url.Content("~/ProductCategory/ProductCategorySel")',
+                    datatype: "json",
+                    type: 'GET'
+                }
+            }
+        });
+        $("#CategoryId").kendoDropDownList(
+            {
+                dataSource: ds1,
+                dataTextField: "CategoryName",
+                dataValueField: "CategoryId",
+                value: "@Model.CategoryId"
+            });
+    });
+
+</script>

@@ -1,0 +1,114 @@
+﻿@model ShoppingCart.Model.CartModel
+@{
+    ViewBag.Title = "Order";
+}
+
+<h2>Enter your info below to order </h2>
+
+<body>
+    @using (Html.BeginForm("SaveOrder", "Customer", FormMethod.Post, new { onsubmit="return Validate();"}))
+    {
+    <table>
+        <tr><td><img src="@Model.ImagePath" height="250" width="250" /></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>
+                <table align="center">
+                    <tr>
+                        <td>
+                            <div>
+                                @Html.TextBoxFor(m => m.CartId, "", new { @class = "", @style = "", @hidden = "hidden" })
+                            </div>
+                            <div>
+                                @Html.TextBoxFor(m => m.ProductId, "", new { @class = "", @style = "", @hidden = "hidden" })
+                            </div>
+                            <div>
+                                UserName:
+                                @Html.TextBoxFor(m => m.UserName, "", new { @class = "", @style = "", @readonly = "readonly" })
+                            </div><br />
+                            <div>
+                                Product Selected:
+                                @Html.TextBoxFor(m => m.ProductName, "", new { @class = "", @style = "", @readonly = "readonly" })
+                            </div><br />
+                            <div>
+                                Product Rate:
+                                @Html.TextBoxFor(m => m.Rate, "", new { @class = "", @style = "", @readonly = "readonly" })
+                            </div><br />
+                            <div>
+                                Enter Product Quantity:
+                                @Html.TextBoxFor(m => m.Quantity, "", new { @class = "", @style = "" })
+                            </div><br />
+                            <div>
+                                @Html.TextBoxFor(m => m.PersonId, "", new { @class = "", @style = "", @hidden = "hidden" })
+                            </div><br />
+                            <div>
+                                <input type="submit" value="submit" name="submit" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    }
+</body>
+
+<script>
+    function Validate()
+    {
+        debugger;
+        $.ajax({
+            type: 'Get',
+            url: '@Url.Content("~/product/productSel")',
+            success: function (result)
+            {
+                debugger;
+                if (result[@Model.ProductId]['Quantity'] < @Model.Quantity)
+                {
+                    alert("Stock Unavailable");
+                    return false;
+                }
+            }
+        })
+    }
+    $(document).ready(function () {
+       @* var ds1 = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: '@Url.Content("~/Person/PersonSel")',
+                    datatype: "json",
+                    type: 'GET'
+                }
+            }
+        });
+        $("#CustomerId").kendoDropDownList({
+            dataSource: ds1,
+            dataTextField:  "FirstName",
+            dataValueField: "PersonId"
+        })*@
+        @*$.ajax({
+            type: "Get",
+            url: '@Url.Content("~/Customer/GetUserData")',
+            success: function (result) {
+                debugger;
+                var UserId = result['PersonId'];
+            }
+        });*@
+        $.ajax({
+            type: 'Get',
+            url: '@Url.Content("~/Person/PersonSel")',
+            success: function (result) {
+                //debugger;
+                var User = '@Model.UserName';
+                for (var i = 0; i < result.length; i++)
+                {
+                    if (User == result[i]['Email'])
+                    {
+                        var Id = result[i]['PersonId'];
+                        $("#PersonId").val(Id);
+                    }
+                }
+            }
+        })
+    });
+</script>
+

@@ -1,0 +1,263 @@
+﻿@model ShoppingCart.Model.PersonModel
+
+@{
+    ViewBag.Title = "Edit Personal Data";
+}
+
+@*@using (Html.BeginForm("SavePerson", "Person", FormMethod.Post))
+    {
+    <table align="center">
+        <tr>
+            @Html.TextBoxFor(m => m.PersonId, "", new { @class = "", @style = "", @hidden = "hidden" })
+        </tr>
+        <tr>
+            <td width="50%">
+                First Name:
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Last Name:
+
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.LastName, "", new { @class = "", @style = "" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Email Address:
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Email, "", new { @class = "", @style = "", @readonly="readonly" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Date of Birth:
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.DOB)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Gender:
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Gender)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Country:
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Country)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Address:
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Address, "", new { @class = "", @style = "" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Mobile Number
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.MobileNo, "", new { @class = "", @style = "" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.TextBoxFor(m => m.PassWord, "", new { @class = "", @style = "", @hidden="hidden" })
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="submit" name="submit" id="SavePerson" />
+            </td>
+        </tr>
+    </table>
+    }*@
+<h2 class="text-center">Add Personal Information</h2>
+<body>
+    @using (Html.BeginForm("SavePerson", "Person", FormMethod.Post, new { onsubmit = "return Validate();", style = "width:auto" }))
+    {
+        <div class="form-group" style="display: none;">
+            <label for="PersonId">Person ID</label>
+            @Html.TextBoxFor(m => m.PersonId, "", new { @class = "", @style = "", @hidden = "hidden" })
+        </div>
+        <div class="form-group">
+            <label for="FirstName">Firstname</label>
+            @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+            <label for="LastName">Lastname</label>
+            @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            
+        </div>
+        <div class="form-group">
+            <label for="Email">Email Address</label>
+            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", type = "email" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="DOB">Date Of Birth</label>
+            @Html.TextBoxFor(m => m.DOB, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DOB, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Gender">Gender</label>
+            @Html.TextBoxFor(m => m.Gender, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Country">Country</label>
+            @Html.TextBoxFor(m => m.Country, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Country, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Address">Address</label>
+            @Html.TextBoxFor(m => m.Address, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="MobileNo">Mobile Number</label>
+            @Html.TextBoxFor(m => m.MobileNo, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.MobileNo, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="PassWord">Password</label>
+            @Html.PasswordFor(m => m.PassWord, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PassWord, "", new { @class = "text-danger" })
+        </div>
+        <div align="right">
+            <button type="submit" class="btn btn-primary" name="submit" id="SavePerson">Submit</button>
+            <input type="button" class="btn btn-danger" value="Cancel" data-dismiss="modal">
+        </div>
+    }
+    @Html.ValidationSummary()
+</body>
+
+<script>
+    function Validate() {
+        debugger; 
+        var RE1 = /^[a-zA-Z\s]+$/;
+        var RE2 = /^[0-9]+$/;
+        var s1 = $('#DOB').val();
+        var s2 = $('#FirstName').val();
+        var s3 = $('#LastName').val();
+        var s4 = $('#Email').val();
+        var s5 = $('#Gender').val();
+        var s6 = $('#Country').val();
+        var s7 = $('#Address').val();
+        var s8 = $('#MobileNo').val();
+        var s9 = $('#AddPersonModal #PassWord').val();
+        if (s2 == "" || s3 == "" || s4 == "" || s5 == "" || s6 == "" || s7 == "" || s8 == "" || s1 == "1/1/0001 12:00:00 AM" || s9=="" ) {
+            alert("Enter Form Properly");
+            return false;
+        }
+        else
+        {
+            if (s2.match(RE1) && s3.match(RE1) && s8.match(RE2)) {
+                return true;
+            }
+            else {
+                alert("Enter Form Properly");
+                return false;
+            }
+        }
+        
+    }
+        $(document).ready(function () {
+            var ds1 = [
+                { text: "Male", value: "1" },
+                { text: "Female", value: "2" }
+            ];
+            var ds2 = [
+                { text: "Nepal", value: "1" },
+                { text: "India", value: "2" },
+                { text: "China", value: "3" },
+                { text: "Pakistan", value: "4" }
+            ];
+            $("#Gender").kendoDropDownList({
+                dataTextField: "text",
+                dataValueField: "value",
+                dataSource: ds1,
+                value: "@Model.Gender"
+
+            })
+            $("#Country").kendoDropDownList({
+                dataTextField: "text",
+                dataValueField: "value",
+                dataSource: ds2,
+                value: "@Model.Country"
+            })
+            $("#DOB").kendoDatePicker({
+                value:"@Model.DateOfBirth"
+            })
+        })
+</script>
+@*<table align="center">
+            <tr>
+                <td>Enter First Name</td>
+                <td><input type="text" id="FirstName" name="FirstName" /></td>
+            </tr>
+            <tr>
+                <td>Enter Last Name</td>
+                <td><input type="text" id="LastName" name="LastName" /></td>
+            </tr>
+            <tr>
+                <td>Enter Email</td>
+                <td><input type="text" id="Email" name="Email" /></td>
+            </tr>
+            <tr>
+                <td>Enter Date Of Birth</td>
+                <td><input type="date" id="DOB" name="DOB" /></td>
+            </tr>
+            <tr>
+                <td>Enter Gender</td>
+                <td>
+                    <input type="radio" name="Gender" value="1" />Male<br />
+                    <input type="radio" name="Gender" value="2" />Female
+                </td>
+            </tr>
+            <tr>
+                <td>Enter Country</td>
+                <td>
+                    <select name="Country">
+                        <option value="1">Nepal</option>
+                        <option value="2">India</option>
+                        <option value="3">China</option>
+                        <option value="4">Pakistan</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Enter Address</td>
+                <td><input type="text" id="Address" name="Address" /></td>
+            </tr>
+            <tr>
+                <td>Enter Mobile No.</td>
+                <td><input type="text" id="MobileNo" name="MobileNo" /></td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr><td><br /></td></tr>
+            <tr><td><br /></td></tr>
+            <tr><td><br /></td></tr>
+            <tr><td><br /></td></tr>
+            <tr><td align="center"><input type="submit" name="Submit" value="Submit" onclick="location.href = '~/Person/Person';" /></td></tr>
+        </table>
+    </form>*@
+<h3>@ViewBag.Message</h3>

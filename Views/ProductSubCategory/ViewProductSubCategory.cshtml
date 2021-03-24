@@ -1,0 +1,206 @@
+﻿@model ShoppingCart.Model.ProductSubCategoryModel
+@{
+    ViewBag.Title = "ViewProductSubCategory";
+}
+
+<h2 class="text-center">Product Sub Category</h2>
+<button class="btn btn-success" id="btnAdd">Add new subcategory</button>
+<div style="display:inline; float:right;">
+    <button class="btn btn-info" id="btnEdit">Edit</button>
+    <button class="btn btn-danger" id="btnDelete">Delete</button>
+</div>
+<br><br>
+<div id="SubCategoryGrid">
+</div>
+
+<div class="modal fade" id="subcategorymodal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Sub Category Form</h3>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        $(document).ready(
+            function ()
+            {
+                var ds = new kendo.data.DataSource({
+                transport: {
+                read: {
+                    url: '@Url.Content("~/ProductSubCategory/SubCategorySel")',
+                    datatype: "json",
+                    type: 'GET'
+                }
+                },
+                batch: true,
+                pageSize: 10,
+                schema: {
+                    data: function (data) {
+                    return data
+                    },
+                    total: function (data) {
+                        return data.length;
+                    },
+                    model: {
+                        fields: {
+                            id: { type: "int", hidden: true },
+                            subcategoryname: { type: "string" },
+                            categoryid: { type: "int" },
+                        }
+                    }
+                },
+                });
+
+                $("#SubCategoryGrid").kendoGrid({
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                sortable: true,
+                filterable: {
+                    extra: false,
+                    operators: {
+                        string: {
+                        startswith: "starts with",
+                        eq: "is equal to",
+                        contains: "contains",
+                        neq: "not equal to",
+                        doesnotcontain: "doesn't contain",
+                        endswith: "ends"
+                        },
+                        number:
+                        {
+                        gt: "greater than",
+                        lt: "less than",
+                        eq: "is equal to",
+                        gte: "greater than equal to",
+                        lte: "less than equal to"
+                        },
+                        integer:
+                        {
+                        gt: "greater than",
+                        lt: "less than",
+                        eq: "is equal to",
+                        gte: "greater than equal to",
+                        lte: "less than equal to"
+                        },
+                        date:
+                        {
+                        gt: "greater than",
+                        lt: "less than",
+                        eq: "is equal to",
+                        gte: "greater than equal to",
+                        lte: "less than equal to"
+                        }
+                    }
+                },
+                selectable: "single row",
+                columns: [{ title: "ID", field: "SubCategoryId" },
+                { title: "Sub Category Name", field: "SubCategoryName" },
+                { title: "Category Id", field: "CategoryId" }
+                ],
+                dataSource:ds
+                })
+            });
+
+    $("#btnAdd").on("click", function () {
+        $.ajax({
+                    type: "Get",
+                    url: '@Url.Content("~/ProductSubCategory/AddEditSubCategory")',
+                    data: { SubCategoryId: 0 },
+                    success: function (data) {
+                        $('#subcategorymodal .modal-body').html('');
+                        $('#subcategorymodal .modal-body').html(data);
+                        $('#Title h2').html('Edit SubCategory');
+                        $("#subcategorymodal").modal('show');
+                        $("#subcategorymodal").appendTo('body');
+                    }
+
+                });
+    })
+
+    $("#btnEdit").on("click", function ()
+    {
+        var grid = $("#SubCategoryGrid").data("kendoGrid");
+        var selected = grid.dataItem(grid.select());
+        if (selected != null) {
+                $.ajax({
+                    type: "Get",
+                    url: '@Url.Content("~/ProductSubCategory/AddEditSubCategory")',
+                    data: { SubCategoryId: selected.SubCategoryId },
+                    success: function (data) {
+                        $('#subcategorymodal .modal-body').html('');
+                        $('#subcategorymodal .modal-body').html(data);
+                        $('#Title h4').html('Edit SubCategory');
+                        $("#subcategorymodal").modal('show');
+                        $("#subcategorymodal").appendTo('body');
+                    }
+
+                });
+        }
+
+            //else {
+            //    toastr["warning"]("Please Select A Row To Edit");
+            //}
+    });
+
+    $("#btnDelete").on("click", function () {
+        var grid = $("#SubCategoryGrid").data("kendoGrid");
+        var selected = grid.dataItem(grid.select());
+        if (selected != null) {
+            $.ajax({
+                type: "Get",
+                url: '@Url.Content("~/ProductSubCategory/DelSubCategory")',
+                data: { SubCategoryId: selected.SubCategoryId },
+                success: function (data) {
+                    $('.body-content').html('');
+                    $('.body-content').html(data);
+                }
+
+            });
+        }
+    });
+
+    @*$(function () {
+              $.ajax({
+                type:'GET',
+                url:'@Url.Content("~/ProductSubCategory/ProductSubCategorySel")',
+                success: function (result) {
+                debugger;
+
+                var table = "";
+                table +=  '<div><table style="width:100%">'
+                table += '<tr>'
+                table += '<th>ID</th>'
+                table += '<th>Category Name</th>'
+                table += '<th>Category ID</th>'
+                table += '<th>Options</th>'
+                table += '</tr >'
+                for (var i = 0; i < result.length; i++) {
+
+                    table += '<tr>'
+                    table += '<td>' + result[i]['SubCategoryId'] + '</td>'
+                    table += '<td>' + result[i]['SubCategoryName'] + '</td>'
+                    table += '<td>' + result[i]['CategoryId'] + '</td>'
+                    table += '<td>' + '<a href="/P/?Id=' + result[i]['SubCategoryId'] + '">EDIT</a> / <a href="/ProductSubCategory/DelProductSubCategory?Id=' + result[i]['SubCategoryId'] + '"> DELETE </a>' + '</td>'
+                    table += '</tr>'
+
+                }
+                table += '</table ></div>'
+
+                $('#ProductSubCategoryTable').html(table);
+                }
+                });
+
+                })*@
+
+</script>

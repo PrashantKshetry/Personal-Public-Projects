@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "EditPerson";
+}
+
+<h2>EditPerson</h2>
+<body>
+    <form method="post" action="@Url.Action("Person","Person")">
+        <table align="center">
+            <tr>
+                <td>Enter First Name</td>
+                <td><input type="text" id="FirstName" name="FirstName" /></td>
+            </tr>
+            <tr>
+                <td>Enter Last Name</td>
+                <td><input type="text" id="LastName" name="LastName" /></td>
+            </tr>
+            <tr>
+                <td>Enter Email</td>
+                <td><input type="text" id="Email" name="Email" /></td>
+            </tr>
+            <tr>
+                <td>Enter Date Of Birth</td>
+                <td><input type="date" id="DOB" name="DOB" /></td>
+            </tr>
+            <tr>
+                <td>Enter Gender</td>
+                <td>
+                    <input type="radio" name="Gender" value="1" />Male<br />
+                    <input type="radio" name="Gender" value="2" />Female
+                </td>
+            </tr>
+            <tr>
+                <td>Enter Country</td>
+                <td>
+                    <select name="Country">
+                        <option value="1">Nepal</option>
+                        <option value="2">India</option>
+                        <option value="3">China</option>
+                        <option value="4">Pakistan</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Enter Address</td>
+                <td><input type="text" id="Address" name="Address" /></td>
+            </tr>
+            <tr>
+                <td>Enter Mobile No.</td>
+                <td><input type="text" id="MobileNo" name="MobileNo" /></td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr><td><br /></td></tr>
+            <tr><td><br /></td></tr>
+            <tr><td><br /></td></tr>
+            <tr><td><br /></td></tr>
+            <tr><td align="center"><input type="submit" name="Submit" value="Submit" /></td></tr>
+        </table>
+    </form>
+    <a href="~/Person/Person">View Data</a>
+</body>
+
+
+

@@ -1,0 +1,29 @@
+﻿@model ShoppingCart.Model.ProductCategoryModel
+
+@{
+    ViewBag.Title = "AddProductCategory";
+}
+
+<h2>AddProductCategory</h2>
+
+<body>
+    @using (Html.BeginForm("AddProductCategory", "ProductCategory", FormMethod.Post))
+    {
+        <table align="center">
+            <tr>
+                <td>
+                    <div>
+                        @Html.TextBoxFor(m => m.CategoryId, "", new { @class = "", @style = "", @hidden = "hidden" })
+                    </div>
+                    <div>
+                        Enter New Product Category
+                        @Html.TextBoxFor(m => m.CategoryName, "", new { @class = "", @style = "" })
+                    </div><br />
+                    <div>
+                        <input type="submit" value="submit" name="submit" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+    </body>

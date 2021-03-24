@@ -1,0 +1,131 @@
+﻿@model ShoppingCart.Model.LoginModel
+@{
+    ViewBag.Title = "Validation";
+}
+
+<h2>Validation</h2>
+
+<body>
+    <div id="Message">
+    </div>
+</body>
+
+<script>
+    $(function () {
+        $.ajax({
+            type : 'GET',
+            url: '@Url.Content("~/Person/LoginDataSel")',
+            success: function (result) {
+                //debugger;
+                var check = 0;
+                var UserName = '@Model.UserName';
+                var passwd = '@Model.PassWord';
+                for (var i = 0; i < result.length; i++)
+                {
+                    if (result[i]['UserName'] == UserName && result[i]['PassWord'] == passwd && result[i]['RoleId']==1) {
+                        check++;
+                    }
+                }
+                if (check > 0) {
+                    $("#Message").html('Login As admin Successful');
+                     $.ajax({
+                                    type: "Get",
+                                    url: '@Url.Content("~/Person/CartBoard")',
+                                    data: { AdminName: UserName },
+                                    success: function (data) {
+                                        $('.body-content').html('');
+                                        $('.body-content').html(data);
+                                        window.location.href = "/Person/ViewPerson";
+                                    }
+                                })
+                }
+                else {
+                    $.ajax({
+                        type : 'GET',
+                        url: '@Url.Content("~/Person/LoginDataSel")',
+                        success: function (result) {
+                            var check = 0;
+                            var UserName = '@Model.UserName';
+                            var passwd = '@Model.PassWord';
+                            var sessioname = '@Session["Name"]';
+                            for (var i = 0; i < result.length; i++)
+                            {
+                                if (result[i]['UserName'] == UserName && result[i]['PassWord'] == passwd)
+                                {
+                                    check++;
+                                }
+                            }
+                            if (check > 0) {
+                                $("#Message").html('Login Successful');
+                                $.ajax({
+                                    type: "Get",
+                                    url: '@Url.Content("~/Person/CartBoard")',
+                                    data: { LogName: UserName },
+                                    success: function (data) {
+                                        $('.body-content').html('');
+                                        $('.body-content').html(data);
+                                        if (sessioname == "") { window.location.href = "/Customer/ShowCart"; }
+                                      
+                                       
+                                    }
+                                })
+                            }
+                            else {
+                                $("#Message").html('Login Failed');
+                                $.ajax({
+                                    type: "Get",
+                                    url: '@Url.Content("~/Person/CartBoard")',
+                                    success: function (data) {
+                                        $('.body-content').html('');
+                                        $('.body-content').html(data);
+                                    }
+                                })
+                            }
+                        }
+                    });
+                }
+
+            }
+        })
+
+        @*$.ajax({
+            type : 'GET',
+            url: '@Url.Content("~/Person/LoginDataSel")',
+            success: function (result) {
+                var check = 0;
+                var email = '@Model.Email';
+                var passwd = '@Model.PassWord';
+                for (var i = 0; i < result.length; i++)
+                {
+                    if (result[i]['Email'] == email && result[i]['PassWord'] == passwd)
+                    {
+                        check++;
+                    }
+                }
+                if (check > 0) {
+                    $("#Message").html('Login Successful');
+                    $.ajax({
+                        type: "Get",
+                        url: '@Url.Content("~/Person/AfterValidate")',
+                        data: { LogName: email, LogPasswd: passwd },
+                        success: function (data) {
+                            $('.body-content').html('');
+                            $('.body-content').html(data);
+                        }
+                    })
+                }
+                else {
+                    $("#Message").html('Login Failed');
+                    $.ajax({
+                        type: "Get",
+                        url: '@Url.Content("~/Person/AfterValidate")',
+                        success: function (data) {
+                            $('.body-content').html('');
+                            $('.body-content').html(data);
+                        }
+                    })
+                }
+            }
+        });*@
+    })
+</script>

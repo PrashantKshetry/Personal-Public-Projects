@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "ShowAllCart";
+}
+
+<h2>ShowAllCart</h2>
+<div id="CartGrid"></div>
+<script>
+    $(document).ready(function () {
+        var ds1 = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: '@Url.Content("~/Customer/CartSel")'
+                }
+            },
+            batch: true,
+            pageSize: 10,
+        });
+
+        $("#CartGrid").kendoGrid({
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            sortable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "starts with",
+                        eq: "is equal to",
+                        contains: "contains",
+                        neq: "not equal to",
+                        doesnotcontain: "doesn't contain",
+                        endswith: "ends"
+                    },
+                    number:
+                    {
+                        gt: "greater than",
+                        lt: "less than",
+                        eq: "is equal to",
+                        gte: "greater than equal to",
+                        lte: "less than equal to"
+                    },
+                    integer:
+                    {
+                        gt: "greater than",
+                        lt: "less than",
+                        eq: "is equal to",
+                        gte: "greater than equal to",
+                        lte: "less than equal to"
+                    },
+                    date:
+                    {
+                        gt: "greater than",
+                        lt: "less than",
+                        eq: "is equal to",
+                        gte: "greater than equal to",
+                        lte: "less than equal to"
+                    }
+                }
+            },
+            selectable: "single row",
+            columns: [
+                { title: "Ordered By", field: "Full_Name" },
+                { title: "Product Name", field: "ProductName" },
+                { title: "Price", field: "Rate" },
+                { title: "Quantity", field: "Quantity" },
+                { title: "Total", field: "Total" },
+                {title: "Image", field: "ImagePath", template: '<img src ="#=ImagePath#" height="130" width="150"/>'}
+            ],
+            dataSource: ds1
+
+        })
+
+    });
+
+</script>
+

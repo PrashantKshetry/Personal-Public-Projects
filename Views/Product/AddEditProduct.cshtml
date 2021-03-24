@@ -1,0 +1,82 @@
+﻿@model ShoppingCart.Model.ProductModel
+
+@{
+    ViewBag.Title = "AddProduct";
+}
+<div id="Title" style="text-align:center;">
+    <h2>Add Product</h2>
+</div>
+
+@using (Html.BeginForm("SaveProduct", "Product", FormMethod.Post, new { enctype = "multipart/form-data", style = "width:auto", onsubmit = "return Validate();", id="ProductForm" }))
+{
+    <div class="form-group" style="display:none;">
+        <label for="ProductId">Product Id</label>
+        @Html.TextBoxFor(m => m.ProductId, "", new { @class = "form-control" })
+    </div>
+    <div class="form-group" style="display:none;">
+        <label for="ImagePath">Image Path</label>
+        @Html.TextBoxFor(m => m.ImagePath, "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="ProductName">Product Name</label>
+        @Html.TextBoxFor(m => m.ProductName, "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="Quantity">No. of Products(Quantity)</label>
+        @Html.TextBoxFor(m => m.Quantity, "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="Rate">Rate of the product</label>
+        @Html.TextBoxFor(m => m.Rate, "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="CategoryId">Select Sub Category</label>
+        @Html.TextBoxFor(m => m.CategoryId, "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="Image_Data">Upload Image of the product</label>
+        @Html.TextBoxFor(m => m.Image_Data, "", new { type = "file" })
+    </div>
+    <div align="right">
+        <input type="submit" class="btn btn-primary" name="submit" value="Submit">
+        <input type="button" class="btn btn-danger" value="Cancel" data-dismiss="modal">
+    </div>
+}
+    <script>
+        function Validate()
+        {
+
+            if ($('#Image_Data').val()) { var path = $('#Image_Data')[0].files[0].name; var size = $('#Image_Data')[0].files[0].size; }
+            else { path = '@Model.ImagePath'; }
+            if ($('#ProductName').val() == "" || $('#Quantity').val() == "" || $('#Rate').val() == "" || $('#CategoryId').val() == "" || path == "") {
+                alert("Enter Form Properly");
+                return false;
+            }
+            else
+            {
+                if (size > 8000) { alert('Image size is too high'); return false; }
+                else { return true; }
+            }
+        }
+
+        $(document).ready(function () {
+            var ds1 = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: '@Url.Content("~/ProductCategory/ProductCategorySel")',
+                        datatype: "json",
+                        type: 'GET'
+                    }
+                }
+            });
+            $("#CategoryId").kendoDropDownList(
+                {
+                    dataSource: ds1,
+                    dataTextField: "Category",
+                    dataValueField: "CategoryId",
+                    value: "@Model.CategoryId"
+                });
+        });
+        
+    </script>
+

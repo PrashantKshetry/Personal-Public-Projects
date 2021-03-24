@@ -1,0 +1,60 @@
+﻿@model ShoppingCart.Model.ProductSubCategoryModel
+
+@{
+    ViewBag.Title = "AddProductSubCategory";
+}
+
+<h2>AddProductSubCategory</h2>
+
+<body>
+    @using (Html.BeginForm("AddProductSubCategory", "ProductSubCategory", FormMethod.Post))
+    {
+        <table align="center">
+            <tr>
+                <td>
+                    <div>
+                        @Html.TextBoxFor(m => m.SubCategoryId, "", new { @class = "", @style = "", @hidden = "hidden" })
+                    </div>
+                    <div>
+                        Enter Product Subcategory Name
+                        @Html.TextBoxFor(m => m.SubCategoryName, "", new { @class = "", @style = "" })
+                    </div><br />
+                    <div>
+                        Select Category:
+                        @{
+                            List<SelectListItem> CountryList = new List<SelectListItem>();
+                            CountryList.Add(new SelectListItem
+                            {
+                                Text = "Nepal",
+                                Value = "1",
+                                Selected = true
+                            });
+                            CountryList.Add(new SelectListItem
+                            {
+                                Text = "India",
+                                Value = "2",
+
+                            });
+                            CountryList.Add(new SelectListItem
+                            {
+                                Text = "China",
+                                Value = "3",
+
+                            });
+                            CountryList.Add(new SelectListItem
+                            {
+                                Text = "Pakistan",
+                                Value = "4",
+
+                            });
+                        }
+                        @Html.DropDownListFor(m => m.CategoryId, CountryList, "-- Select Country --")
+                    </div><br />
+                    <div>
+                        <input type="submit" value="submit" name="submit" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</body>

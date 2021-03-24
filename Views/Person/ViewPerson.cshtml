@@ -1,0 +1,243 @@
+﻿@model ShoppingCart.Model.PersonModel
+@{ ViewBag.Title = "Perosnal Information";}
+<h2 class="text-center">Person Details</h2>
+<div style="display:inline; float:right;">
+    <button class="btn btn-info" id="btnAdd">Add</button>
+    <button class="btn btn-danger" id="btnDelete">Delete</button>
+</div>
+<br><br>
+<div id="PersonGrid">
+</div>
+
+<div class="modal fade" id="PersonModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(
+        function () {
+        var ds = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: '@Url.Content("~/Person/PersonSel")',
+                    datatype: "json",
+                    type: 'GET'
+                }
+            },
+            batch: true,
+            pageSize: 10,
+            schema: {
+                data: function (data) {
+                    return data
+                },
+                total: function (data) {
+                    return data.length;
+                },
+                model: {
+                    fields: {
+                        id: { type: "int", hidden: true },
+                        firstname: { type: "string" },
+                        lastname: { type: "string" },
+                        email: { type: "string" },
+                        dob: { type: "date" },
+                        gender: { type: "int" },
+                        country: { type: "int" },
+                        address: { type: "string" },
+                        mobile: { type: "string" },
+
+
+                    }
+                }
+            },
+        });
+
+        $("#PersonGrid").kendoGrid({
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            sortable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        startswith: "starts with",
+                        eq: "is equal to",
+                        contains: "contains",
+                        neq: "not equal to",
+                        doesnotcontain: "doesn't contain",
+                        endswith: "ends"
+                    },
+                    number:
+                    {
+                        gt: "greater than",
+                        lt: "less than",
+                        eq: "is equal to",
+                        gte: "greater than equal to",
+                        lte: "less than equal to"
+                    },
+                    integer:
+                    {
+                        gt: "greater than",
+                        lt: "less than",
+                        eq: "is equal to",
+                        gte: "greater than equal to",
+                        lte: "less than equal to"
+                    },
+                    date:
+                    {
+                        gt: "greater than",
+                        lt: "less than",
+                        eq: "is equal to",
+                        gte: "greater than equal to",
+                        lte: "less than equal to"
+                    }
+                }
+            },
+            selectable: "single row",
+            columns: [{ title: "First Name", field: "FirstName" },
+            { title: "Last Name", field: "LastName" },
+            { title: "Email", field: "Email" },
+            { title: "DOB", field: "DateOfBirth" },
+            { title: "Gender", field: "Gender" },
+            { title: "Country", field: "Country" },
+            { title: "Address", field: "Address" },
+            { title: "Mobile", field: "MobileNo" }
+            ],
+            dataSource:ds
+        })
+        });
+    $('#btnAdd').on("click", function () {
+            $.ajax({
+                type: "Get",
+                url: '@Url.Content("~/Person/AddEditPerson")',
+                data: { ProductId: 0 },
+                success: function (data) {
+                    $('#PersonModal .modal-body').html('');
+                    $('#PersonModal .modal-body').html(data);
+                    $('#PersonModal').modal('show');
+                    $('#PersonModal').appendTo('body');
+                }
+
+            })
+        });
+
+
+    $("#btnEdit").on("click", function ()
+    {
+        var grid = $("#PersonGrid").data("kendoGrid");
+        var selected = grid.dataItem(grid.select());
+        if (selected != null)
+        {
+            $.ajax({
+                type: "Get",
+                url: '@Url.Content("~/Person/AddEditPerson")',
+                data: { PersonId: selected.PersonId },
+                success: function (data) {
+                    $('.body-content').html('');
+                    $('.body-content').html(data);
+                    $('#Title h4').html('Edit Person');
+                }
+            });
+        }
+        else { alert('Select a data first'); }
+
+            //else {
+            //    toastr["warning"]("Please Select A Row To Edit");
+            //}
+    });
+
+    $("#btnDelete").on("click", function ()
+    {
+        var grid = $("#PersonGrid").data("kendoGrid");
+        var selected = grid.dataItem(grid.select());
+        if (selected != null) {
+            var Confirm = confirm('Are you sure?');
+            if (Confirm)
+            {
+                $.ajax({
+                type: "Get",
+                url: '@Url.Content("~/Person/DeletePerson")',
+                data: { PersonId: selected.PersonId },
+                success: function (data) {
+                    // $('.body-content').html('');
+                    $('.body-content').html(data);
+                }
+                });
+            }
+
+        }
+        else { alert('Select a data first');}
+
+            //else {
+            //    toastr["warning"]("Please Select A Row To Edit");
+            //}
+    });
+</script>
+
+
+
+
+
+@*<script>
+        $(function () {
+                  $.ajax({
+                    type:'GET',
+                    url:'@Url.Content("~/Person/PersonSel")',
+                    success: function (result) {
+                    debugger;
+
+                    var table = "";
+                    table +=  '<div><table style="width:100%">'
+                    table += '<tr>'
+                    table += '<th>ID</th>'
+                    table += '<th>Firstname</th>'
+                    table += '<th>Lastname</th>'
+                    table += '<th>Email</th>'
+                    table += '<th>DOB</th>'
+                    table += '<th>Gender</th>'
+                    table += '<th>Country</th>'
+                    table += '<th>Address</th>'
+                    table += '<th>Mobile</th>'
+                    table += '<th>Options</th>'
+                    table += '</tr >'
+                    for (var i = 0; i < result.length; i++) {
+
+                        table += '<tr>'
+                        table += '<td>' + result[i]['PersonId'] + '</td>'
+                        table += '<td>' + result[i]['FirstName'] + '</td>'
+                        table += '<td>' + result[i]['LastName'] + '</td>'
+                        table += '<td>' + result[i]['Email'] + '</td>'
+                        table += '<td>' + (result[i]['DateOfBirth']) + '</td>'
+                        table += '<td>' + result[i]['Gender'] + '</td>'
+                        table += '<td>' + result[i]['Country'] + '</td>'
+                        table += '<td>' + result[i]['Address'] + '</td>'
+                        table += '<td>' + result[i]['MobileNo'] + '</td>'
+                        table += '<td>' + '<a href="/Person/SavePerson?Id=' + result[i]['PersonId'] + '">EDIT</a> / <a href="/Person/DeletePerson?Id=' + result[i]['PersonId'] + '"> DELETE </a>' + '</td>'
+                        table += '</tr>'
+
+                    }
+                    table += '</table ></div>'
+
+                    $('#PersonListTable').html(table);
+                    }
+                    });
+
+                    })
+
+    </script>*@
+
+
+
+
+

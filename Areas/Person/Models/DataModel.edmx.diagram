@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c9fb6cba65dd49cbaea940cd29e7ab60" Name="Diagram1">
+        <EntityTypeShape EntityType="PrashantModel.Country" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="PrashantModel.Gender" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="PrashantModel.Person" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="PrashantModel.PersonRole" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PrashantModel.Role" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <AssociationConnector Association="PrashantModel.FK__Person__Country__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="PrashantModel.FK__Person__Gender__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="PrashantModel.FK__PersonRol__Perso__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="PrashantModel.FK__PersonRol__RoleI__4F7CD00D" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

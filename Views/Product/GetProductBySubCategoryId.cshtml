@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ShoppingCart.Model.ProductModel>
+@{
+    ViewBag.Title = "GetProductBySubCategoryId";
+    var count = 0;
+}
+
+<h2 class="text-center">Name of SubCategory</h2>
+<h5 class="text-center">Total products: @Model.Count()</h5>
+
+    <div class="row">
+    @foreach (var item in Model)
+    {
+        if ((count % 4) == 0)
+        {
+            <div class="clearfix"></div>
+        }
+            <div class="col-lg-3 products">
+                <div>
+                    <img src="@item.ImagePath" width="170" height="180" />
+                    <div class="text-center">
+                        Name: @item.ProductName <br>
+                        Price: @item.Rate
+                    </div>
+                    <div class="text-center">
+                        <a href="/Customer/Order/@item.ProductId?Name=@item.ProductName&Rate=@item.Rate&ImagePath=@item.ImagePath">
+                            <button class="btn btn-primary" style="margin:5px 0 10px;"><span class="ti-shopping-cart"></span>Add to cart</button></a>
+                            <button class="btn btn-success"><span class="ti-heart"></span>Favourite</button>
+                    </div>
+                </div>
+            </div>
+
+            @*<td>
+                <table>
+                    <tr><td><a href="/Customer/Order/@item.ProductId?Name=@item.ProductName&Rate=@item.Rate&ImagePath=@item.ImagePath"><img src="@item.ImagePath" /></a></td></tr>
+                    <tr><td>Name: @item.ProductName</td></tr>
+                    <tr><td>Price: @item.Rate</td></tr>
+                </table>
+            </td>*@
+        
+        count++;
+
+    }
+</div>
+

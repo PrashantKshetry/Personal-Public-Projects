@@ -1,0 +1,214 @@
+﻿
+
+@{
+    ViewBag.Title = "ViewProductCategory";
+}
+
+<h2 class="text-center">Product Category</h2>
+<button class="btn btn-success" id="btnAdd">Add New Category</button>
+<div style="display:inline; float:right;">
+    <button class="btn btn-info" id="btnEdit">Edit</button>
+    <button class="btn btn-danger" id="btnDelete">Delete</button>
+</div>
+
+<br><br>
+<div id="CategoryGrid">
+</div>
+<div class="modal fade" id="AddCategoryModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    var msg = '@ViewBag.message';
+    if (msg != "") { alert(msg); }
+    $(document).ready(
+        function () {
+            var ds = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: '@Url.Content("~/ProductCategory/ProductCategorySel")',
+                        datatype: "json",
+                        type: 'GET'
+                    }
+                },
+                batch: true,
+                pageSize: 10,
+                schema: {
+                    data: function (data) {
+                        return data
+                    },
+                    total: function (data) {
+                        return data.length;
+                    },
+                    model: {
+                        fields: {
+                            id: { type: "int", hidden: true },
+                            categoryname: { type: "string" },
+                        }
+                    }
+                },
+            });
+
+            $("#CategoryGrid").kendoGrid({
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                sortable: true,
+                filterable: {
+                    extra: false,
+                    operators: {
+                        string: {
+                            startswith: "starts with",
+                            eq: "is equal to",
+                            contains: "contains",
+                            neq: "not equal to",
+                            doesnotcontain: "doesn't contain",
+                            endswith: "ends"
+                        },
+                        number:
+                        {
+                            gt: "greater than",
+                            lt: "less than",
+                            eq: "is equal to",
+                            gte: "greater than equal to",
+                            lte: "less than equal to"
+                        },
+                        integer:
+                        {
+                            gt: "greater than",
+                            lt: "less than",
+                            eq: "is equal to",
+                            gte: "greater than equal to",
+                            lte: "less than equal to"
+                        },
+                        date:
+                        {
+                            gt: "greater than",
+                            lt: "less than",
+                            eq: "is equal to",
+                            gte: "greater than equal to",
+                            lte: "less than equal to"
+                        }
+                    }
+                },
+                selectable: "single row",
+                columns: [{ title: "Parent Category Name", field: "Parent_Category" },
+                    { title: "Category Name", field: "Category" }
+                ],
+                dataSource: ds
+            })
+            $("#btnEdit").on("click", function ()
+            {
+                var grid = $("#CategoryGrid").data("kendoGrid");
+                var selected = grid.dataItem(grid.select());
+                if (selected != null) {
+                    $.ajax({
+                        type: "Get",
+                        url: '@Url.Content("~/ProductCategory/AddEditCategory")',
+                        data: { CategoryId: selected.CategoryId },
+                        success: function (data) {
+                            $('#AddCategoryModal .modal-body').html('');
+                            $('#AddCategoryModal .modal-body').html(data);
+                            $('#Title h2').html('Edit Category');
+                            $("#AddCategoryModal").modal('show');
+                            $("#AddCategoryModal").appendTo('body');
+                        }
+
+                    });
+                }
+                else { alert('Select a data first'); }
+
+            //else {
+            //    toastr["warning"]("Please Select A Row To Edit");
+            //}
+            });
+
+            $("#btnDelete").on("click", function ()
+            {debugger
+                var grid = $("#CategoryGrid").data("kendoGrid");
+                var selected = grid.dataItem(grid.select());
+                if (selected != null) {
+                    var Confirm = confirm('Are you sure');
+                    if (Confirm)
+                    {
+                        $.ajax({
+                        type: "Get",
+                        url: '@Url.Content("~/ProductCategory/DelCategory")',
+                        data: { CategoryId: selected.CategoryId },
+                        success: function (data) {
+                            $('.body-content').html('');
+                            $('.body-content').html(data);
+
+                        }
+                        });
+                    }
+                }
+                else {alert('select a row first')}
+
+
+            //else {
+            //    toastr["warning"]("Please Select A Row To Edit");
+            //}
+            });
+            $("#btnAdd").on("click", function () {
+                $.ajax({
+                            type: "Get",
+                            url: '@Url.Content("~/ProductCategory/AddEditCategory")',
+                            data: { CategoryId: 0 },
+                            success: function (data) {
+                            $('#AddCategoryModal .modal-body').html('');
+                            $('#AddCategoryModal .modal-body').html(data);
+                            $("#AddCategoryModal").modal('show');
+                            $("#AddCategoryModal").appendTo('body');
+                            }
+
+                        });
+            })
+        });
+
+
+
+
+    @*$(function () {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Content("~/ProductCategory/ProductCategorySel")',
+            success: function (result) {
+                debugger;
+
+                var table = "";
+                table += '<div><table style="width:100%">'
+                table += '<tr>'
+                table += '<th>ID</th>'
+                table += '<th>Category Name</th>'
+                table += '<th>Options</th>'
+                table += '</tr >'
+                for (var i = 0; i < result.length; i++) {
+
+                    table += '<tr>'
+                    table += '<td>' + result[i]['CategoryId'] + '</td>'
+                    table += '<td>' + result[i]['CategoryName'] + '</td>'
+                    table += '<td>' + '<a href="/P/?Id=' + result[i]['CategoryId'] + '">EDIT</a> / <a href="/ProductCategory/DelProductCategory?Id=' + result[i]['CategoryId'] + '"> DELETE </a>' + '</td>'
+                    table += '</tr>'
+
+                }
+                table += '</table ></div>'
+
+                $('#ProductCategoryTable').html(table);
+            }
+        });
+
+    }) *@
+
+</script>

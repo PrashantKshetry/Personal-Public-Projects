@@ -1,0 +1,26 @@
+﻿@model ShoppingCart.Model.CategoryModel
+
+@*@{
+        ViewBag.Title = "Get Menu Items";
+    }*@
+<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    @foreach(var item in Model.ParentCategory)
+     {
+        <div class="dropdown-item" href="#">
+            <p>@item.CategoryName</p>
+            <ul>
+
+                @{var list = Model.Category.Where(x => x.ParentCategoryId == item.CategoryId);
+                    foreach (var sublist in list)
+                    {
+                        <li>
+                            <a href="~/Product/GetProductBySubCategoryId?Id=@sublist.CategoryId">@sublist.Category</a>
+                        </li>
+                    }
+                }
+
+
+            </ul>
+        </div>
+     }
+</div>

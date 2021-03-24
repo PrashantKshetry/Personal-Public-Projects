@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "ViewProduct";
+}
+
+<h2 class="text-center">View Available Products</h2>
+<input type="button" class="btn btn-primary" value="Add Product" id="btnAdd">
+<div style="display:inline; float:right;">
+    <button class="btn btn-info" id="btnEdit">Edit</button>
+    <button class="btn btn-danger" id="btnDelete">Delete</button>
+</div>
+<br><br>
+<div id="ProductGrid">
+</div>
+
+<div class="modal fade" id="ProductModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var msg = '@ViewBag.message';
+    if (msg != "") { alert(msg); }
+    $(function () {
+
+            var ds = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: '@Url.Content("~/Product/ProductSel")',
+                        datatype: "json",
+                        type: 'GET'
+                    }
+                },
+                batch: true,
+                pageSize: 10,
+                schema: {
+                    data: function (data) {
+                        return data;
+                    },
+                    total: function (data) {
+                        return data.length;
+                    },
+                    model: {
+                        fields: {
+                            id: { type: "int", hidden: true },
+                            productname: { type: "string" },
+                            quantity: { type: "int" },
+                            rate: { type: "int" },
+                            subcategoryid: { type: "int" },
+                            imagepath: {type:"string"}
+
+                        }
+                    }
+                },
+            });
+
+            $("#ProductGrid").kendoGrid({
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                sortable: true,
+                filterable: {
+                    extra: false,
+                    operators: {
+                        string: {
+                            startswith: "starts with",
+                            eq: "is equal to",
+                            contains: "contains",
+                            neq: "not equal to",
+                            doesnotcontain: "doesn't contain",
+                            endswith: "ends"
+                        },
+                        number:
+                        {
+                            gt: "greater than",
+                            lt: "less than",
+                            eq: "is equal to",
+                            gte: "greater than equal to",
+                            lte: "less than equal to"
+                        },
+                        integer:
+                        {
+                            gt: "greater than",
+                            lt: "less than",
+                            eq: "is equal to",
+                            gte: "greater than equal to",
+                            lte: "less than equal to"
+                        },
+                        date:
+                        {
+                            gt: "greater than",
+                            lt: "less than",
+                            eq: "is equal to",
+                            gte: "greater than equal to",
+                            lte: "less than equal to"
+                        }
+                    }
+                },
+                selectable: "single row",
+                columns: [{ title: "Product Name", field: "ProductName" },
+                { title: "Quantity", field: "Quantity" },
+                { title: "Rate", field: "Rate" },
+                { title: "Image", field: "ImagePath", template: '<img src ="#=ImagePath#" height="40%" width="auto"/>'}
+                ],
+                dataSource:ds
+            })
+
+            $('#btnAdd').on("click", function () {
+                $.ajax({
+                    type: "Get",
+                    url: '@Url.Content("~/Product/AddEditProduct")',
+                    data: { ProductId: 0 },
+                    success: function (data) {
+                        $('#ProductModal .modal-body').html('');
+                        $('#ProductModal .modal-body').html(data);
+                        $('#ProductModal').modal('show');
+                        $('#ProductModal').appendTo('body');
+                    }
+                })
+            });
+
+
+        $("#btnEdit").on("click", function ()
+        {
+            var grid = $("#ProductGrid").data("kendoGrid");
+            var selected = grid.dataItem(grid.select());
+            if (selected != null) {
+                    $.ajax({
+                        type: "Get",
+                        url: '@Url.Content("~/Product/AddEditProduct")',
+                        data: { ProductId: selected.ProductId },
+                        success: function (data) {
+                            $('#ProductModal .modal-body').html('');
+                            $('#ProductModal .modal-body').html(data);
+                            $('#Title h2').html('Edit Product');
+                            $('#ProductModal').modal('show');
+                            $('#ProductModal').appendTo('body');
+                        }
+
+                    });
+            }
+            else { alert('Select a data first'); }
+
+                //else {
+                //    toastr["warning"]("Please Select A Row To Edit");
+                //}
+        });
+
+        $("#btnDelete").on("click", function ()
+        {
+            var grid = $("#ProductGrid").data("kendoGrid");
+            var selected = grid.dataItem(grid.select());
+            if (selected != null) {
+                var Confirm = confirm('Are you sure?');
+                if (Confirm)
+                {
+                     $.ajax({
+                        type: "Get",
+                        url: '@Url.Content("~/Product/DelProduct")',
+                        data: { ProductId: selected.ProductId },
+                        success: function (data) {
+                            $('.body-content').html('');
+                            $('.body-content').html(data);
+                        }
+                     });
+                }
+            }
+            else { alert('Select a data first'); }
+
+                //else {
+                //    toastr["warning"]("Please Select A Row To Edit");
+                //}
+        });
+    });
+
+
+
+        @*$.ajax({
+                type:'GET',
+                url:'@Url.Content("~/Product/ProductSel")',
+                success: function (result) {
+                debugger;
+
+                var table = "";
+                table +=  '<div><table style="width:100%">'
+                table += '<tr>'
+                table += '<th>ID</th>'
+                table += '<th>Product Name</th>'
+                table += '<th>Quantity</th>'
+                table += '<th>Rate</th>'
+                table += '<th>Subcategory Id</th>'
+                table += '<th>Options</th>'
+                table += '</tr >'
+                for (var i = 0; i < result.length; i++) {
+
+                    table += '<tr>'
+                    table += '<td>' + result[i]['ProductId'] + '</td>'
+                    table += '<td>' + result[i]['ProductName'] + '</td>'
+                    table += '<td>' + result[i]['Quantity'] + '</td>'
+                    table += '<td>' + result[i]['Rate'] + '</td>'
+                    table += '<td>' + (result[i]['SubCategoryId']) + '</td>'
+                    table += '<td>' + '<a href="/Product/SaveProduct?Id=' + result[i]['ProductId'] + '">EDIT</a> / <a href="/Product/DelProduct?Id=' + result[i]['ProductId'] + '"> DELETE </a>' + '</td>'
+                    table += '</tr>'
+
+                }
+                table += '</table ></div>'
+
+                $('#ProductListTable').html(table);
+                }
+                });
+
+                })*@
+
+</script>
+
+

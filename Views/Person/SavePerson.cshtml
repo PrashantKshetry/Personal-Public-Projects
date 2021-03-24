@@ -1,0 +1,164 @@
+﻿@model ShoppingCart.Model.PersonModel
+
+@{
+    ViewBag.Title = "enterpersondata";
+}
+@*<script src="~/Content/Exolutus/js/main.js"></script>*@
+<script src="~/Content/Jquery/jquery.min.js"></script>
+<script src="~/Content/Bootstrap/bootstrap.min.js"></script>
+<script src="~/Content/Bootstrap/bootbox.min.js"></script>
+<link href="~/Content/Bootstrap/bootstrap.min.css" rel="stylesheet">
+<script src="~/Content/Kendo/kendo.all.min.js"></script>
+
+<h2>enter person data</h2>
+
+<body>
+    @using (Html.BeginForm("SavePerson", "Person", FormMethod.Post))
+    {
+        <table align="center">
+            <tr>
+                <td>
+                    <div>
+                        @Html.TextBoxFor(m => m.PersonId, "", new { @class = "", @style = "", @hidden = "hidden" })
+                    </div>
+                    <div>
+                        Enter First Name
+                        @Html.TextBoxFor(m => m.FirstName, "", new { @class = "", @style = "" })
+                    </div><br />
+                    <div>
+                        Enter Last Name
+                        @Html.TextBoxFor(m => m.LastName, "", new { @class = "", @style = "" })
+                    </div><br />
+                    <div>
+                        Enter Email Address
+                        @Html.TextBoxFor(m => m.Email, "", new { @class = "", @style = "" })
+                    </div><br />
+                    <div>
+                        Enter Date of Birth
+                        @Html.TextBoxFor(m => m.DOB, "", new { @type = "date" })
+                    </div><br />
+                    <div>
+                        Select Gender:
+                        @{
+                            List<SelectListItem> GenderList = new List<SelectListItem>();
+                            GenderList.Add(new SelectListItem
+                            {
+                                Text = "Male",
+                                Value = "1",
+                                Selected = true
+                            });
+                            GenderList.Add(new SelectListItem
+                            {
+                                Text = "Female",
+                                Value = "2",
+
+                            });
+                        }
+
+                        @Html.DropDownListFor(m => m.Gender, GenderList, "-- Select Gender --")
+                    </div><br />
+                    <div>
+                        Select Country:
+                        @{
+                            List<SelectListItem> CountryList = new List<SelectListItem>();
+                            CountryList.Add(new SelectListItem
+                            {
+                                Text = "Nepal",
+                                Value = "1",
+                                Selected = true
+                            });
+                            CountryList.Add(new SelectListItem
+                            {
+                                Text = "India",
+                                Value = "2",
+
+                            });
+                            CountryList.Add(new SelectListItem
+                            {
+                                Text = "China",
+                                Value = "3",
+
+                            });
+                            CountryList.Add(new SelectListItem
+                            {
+                                Text = "Pakistan",
+                                Value = "4",
+
+                            });
+                        }
+                        @Html.DropDownListFor(m => m.Country, CountryList, "-- Select Country --")
+                    </div><br />
+                    <div>
+                        Enter Address
+                        @Html.TextBoxFor(m => m.Address, "", new { @class = "", @style = "" })
+                    </div><br />
+                    <div>
+                        Enter Mobile Number
+                        @Html.TextBoxFor(m => m.MobileNo, "", new { @class = "", @style = "" })
+                    </div><br />
+                    <div>
+                        <input type="submit" value="submit" name="submit" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+    @*<table align="center">
+                <tr>
+                    <td>Enter First Name</td>
+                    <td><input type="text" id="FirstName" name="FirstName" /></td>
+                </tr>
+                <tr>
+                    <td>Enter Last Name</td>
+                    <td><input type="text" id="LastName" name="LastName" /></td>
+                </tr>
+                <tr>
+                    <td>Enter Email</td>
+                    <td><input type="text" id="Email" name="Email" /></td>
+                </tr>
+                <tr>
+                    <td>Enter Date Of Birth</td>
+                    <td><input type="date" id="DOB" name="DOB" /></td>
+                </tr>
+                <tr>
+                    <td>Enter Gender</td>
+                    <td>
+                        <input type="radio" name="Gender" value="1" />Male<br />
+                        <input type="radio" name="Gender" value="2" />Female
+                    </td>
+                </tr>
+                <tr>
+                    <td>Enter Country</td>
+                    <td>
+                        <select name="Country">
+                            <option value="1">Nepal</option>
+                            <option value="2">India</option>
+                            <option value="3">China</option>
+                            <option value="4">Pakistan</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Enter Address</td>
+                    <td><input type="text" id="Address" name="Address" /></td>
+                </tr>
+                <tr>
+                    <td>Enter Mobile No.</td>
+                    <td><input type="text" id="MobileNo" name="MobileNo" /></td>
+                </tr>
+                <tr><td><br /></td></tr>
+                <tr><td><br /></td></tr>
+                <tr><td><br /></td></tr>
+                <tr><td><br /></td></tr>
+                <tr><td><br /></td></tr>
+                <tr><td align="center"><input type="submit" name="Submit" value="Submit" onclick="location.href = '~/Person/Person';" /></td></tr>
+            </table>
+        </form>*@
+    <h3>@ViewBag.Message</h3>
+</body>
+@*<script>
+        $(document).ready(function () {
+            debugger
+            $('#DOB').kendoDateTimePicker();
+        });
+    </script>*@

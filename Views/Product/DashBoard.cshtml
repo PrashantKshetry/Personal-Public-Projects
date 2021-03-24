@@ -1,0 +1,24 @@
+﻿@model ShoppingCart.Model.CategoryModel
+@{
+    ViewBag.Title = "DashBoard";
+}
+
+
+<h2>DashBoard</h2>
+
+<div>
+    @foreach (var item in Model.Category)
+    {
+        var list = Model.Product.Where(x => x.CategoryId == item.CategoryId);
+        if (list.Any())
+        {
+        <a href="~/Product/GetProductBySubCategoryId?Id=@item.CategoryId"><h3>@item.Category</h3></a>
+        <div class="row">
+            @foreach (var subitem in list)
+            {
+                <div class="col-lg-3 products"><a href="/Product/ProductDetails/@subitem.ProductId?Name=@subitem.ProductName&Rate=@subitem.Rate&ImagePath=@subitem.ImagePath"><img src="@subitem.ImagePath" width="200" height="200" /></a></div>
+            }
+        </div>}
+    }
+
+</div>

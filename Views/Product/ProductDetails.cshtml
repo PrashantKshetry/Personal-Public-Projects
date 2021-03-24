@@ -1,0 +1,40 @@
+﻿@model ShoppingCart.Model.ProductModel
+@{
+    ViewBag.Title = "ProductDetails";
+}
+
+<h2>ProductDetails</h2>
+<table>
+    <tr>
+        <td><img src="@Model.ImagePath" /></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td>
+            <table align="center">
+                <tr>
+                    <td>
+                        <div>
+                            <p>ID:@Model.ProductId</p>
+                        </div>
+
+                        <div>
+                            <p>Name:@Model.ProductName</p>
+                        </div>
+                        <div>
+                            <p>Price:@Model.Rate</p>
+                        </div>
+                    </td>
+                    @if(Session["LogName"]==null)
+                    {
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </td>
+                        <td>
+                            <h4>Log In As User and go to Product Explorer for purchase</h4>
+                        </td>
+                    }
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+

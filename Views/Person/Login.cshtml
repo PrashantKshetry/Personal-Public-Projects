@@ -1,0 +1,110 @@
+﻿@model ShoppingCart.Model.LoginModel
+@{
+    ViewBag.Title = "Login";
+    //Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">Login here!</h2>
+<div id="Message"></div>
+
+
+    @using (Html.BeginForm("Validation", "Person", FormMethod.Post))
+    {
+    <div class="form-group">
+        <label for="email">Username</label>
+        @Html.TextBoxFor(m => m.UserName, "", new { @class = "form-control", @style = "", placeholder = "Enter Username" })
+        <small id="emailHelp" class="form-text text-muted">Please enter a valid username that has been registered on the system.</small>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        @Html.PasswordFor(m => m.PassWord, new { @class = "form-control", @style = "", placeholder = "Enter Password" })
+    </div>
+    <button type="button" class="btn btn-primary" id="btnSignUp">Create New Account</button>
+    <button type="submit" class="btn btn-primary" id="btnLogIn">Login</button>
+    <p><a href="#">Forgot password?</a></p>
+    }
+    
+
+<div class="modal fade" id="AddPersonModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                @{Html.RenderAction("AddEditPerson", "Person"); }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script> 
+    $(function () {
+        $("#btnSignUp").on("click", function () {
+            $('#AddPersonModal').modal('show');
+            $("#AddPersonModal").appendTo("body");
+        });
+        if (window.history && window.history.pushState) {
+            window.history.pushState('', null, './Login');
+            $(window).on('popstate', function () {
+                window.location.reload();
+            });
+        }
+
+
+            @*$("#btnSignUp").on("click", function () {
+                var name = $("#UserName").val();
+                var pass = $("#PassWord").val();
+                if (name != "" && pass != "") {
+                    $.ajax({
+                        type: "Get",
+                        url: '@Url.Content("~/Person/AddEditPerson")',
+                        data: { Email: name, PassWord: pass },
+                        success: function (data) {
+                            $('.body-content').html('');
+                            $('.body-content').html(data);
+
+                        }
+                    })
+                }
+                else { alert("Enter desired user name and password first to sign up"); }
+
+            });*@
+
+            @*$("#btnLogIn").on("click", function () {
+                var name = $("#UsrName").val();
+                var pass = $("#passwd").val();
+                if (name != "" && pass != "")
+                {
+                    $.ajax({
+                        type: "Get",
+                        url: '@Url.Content("~/Person/Validation")',
+                        data: { Email: name, PassWord: pass },
+                        success: function (data)
+                        {
+                            $('.body-content').html('');
+                            $('.body-content').html(data);
+                        }
+                    })
+                }
+
+
+            $('#btnLogIn').attr('disabled', true);
+            $('#PassWord').keydown(function () {
+                if ($(this).val.length != 0) {
+                    $('#btnLogIn').attr('disabled', false);
+                }
+            })
+
+            });*@
+        /*function goBack() {
+            window.location.hash = window.location.lasthash[window.location.lasthash.length - 1];
+            //blah blah blah
+            window.location.lasthash.pop();
+        }*/
+    });
+
+</script>
+
